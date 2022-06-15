@@ -1,0 +1,330 @@
+{
+  "@odata.type": "#microsoft.graph.call",
+  "direction": "outgoing",
+  "subject": "Create a group call with service hosted media",
+  "callbackUri": "https://webhook.site/7de9fc35-0d22-4ed1-9240-5b591054abf7",
+  "source": {
+    "@odata.type": "#microsoft.graph.participantInfo",
+    "identity": {
+      "@odata.type": "#microsoft.graph.identitySet",
+      "application": {
+        "@odata.type": "#microsoft.graph.identity",
+        "displayName": "TestBot",
+        "id": "0754b74f-143e-43a8-9b13-a0ce1f09a75f"
+      }
+    }
+  },
+  "targets": [
+    {
+      "@odata.type": "#microsoft.graph.invitationParticipantInfo",
+      "identity": {
+        "@odata.type": "#microsoft.graph.identitySet",
+        "user": {
+          "@odata.type": "#microsoft.graph.identity",
+          "displayName": "Cliff",
+          "id": "1f16b850-2642-4236-a7be-46c783b527f0",
+          "tenantId": "0cd9af8a-802d-4b78-9302-81f9b72167e5"
+        }
+      }
+    },
+    {
+      "@odata.type": "#microsoft.graph.invitationParticipantInfo",
+      "identity": {
+        "@odata.type": "#microsoft.graph.identitySet",
+        "user": {
+          "@odata.type": "#microsoft.graph.identity",
+          "displayName": "Cliff olaw",
+          "id": "e452b1cb-4cd1-4558-beca-f7aeb71f434a",
+          "tenantId": "0cd9af8a-802d-4b78-9302-81f9b72167e5"
+        }
+      }
+    }
+  ],
+  "requestedModalities": [
+    "audio"
+  ],
+  "mediaConfig": {
+    "@odata.type": "#microsoft.graph.serviceHostedMediaConfig",
+    "removeFromDefaultAudioGroup": false
+  },
+  "tenantId": "0cd9af8a-802d-4b78-9302-81f9b72167e5"
+}
+
+
+
+
+///SAMPLE STARTS HERE
+
+
+//when having two other participants aside the bot
+
+{
+  "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#communications/calls('401f5d00-8431-4641-93e6-16c375f9f05f')/participants",
+  "value": [
+    {
+      "id": "c5d7df24-e927-4704-9b83-833a68a85010",
+      "metadata": null,
+      "isMuted": true,
+      "isInLobby": false,
+      "recordingInfo": null,
+      "info": {
+        "endpointType": "default",
+        "region": null,
+        "languageId": "en-GB",
+        "countryCode": null,
+        "participantId": "c5d7df24-e927-4704-9b83-833a68a85010",
+        "identity": {
+          "phone": null,
+          "guest": null,
+          "encrypted": null,
+          "onPremises": null,
+          "applicationInstance": null,
+          "application": null,
+          "device": null,
+          "user": {
+            "id": "1f16b850-2642-4236-a7be-46c783b527f0",
+            "displayName": "clifford olawaiye",
+            "tenantId": "0cd9af8a-802d-4b78-9302-81f9b72167e5",
+            "registrantId": null,
+            "identityProvider": "AAD"
+          }
+        }
+      },
+      "mediaStreams": [
+        {
+          "mediaType": "audio",
+          "label": "main-audio",
+          "sourceId": "15",
+          "direction": "sendReceive",
+          "serverMuted": false
+        },
+        {
+          "mediaType": "video",
+          "label": "main-video",
+          "sourceId": "16",
+          "direction": "receiveOnly",
+          "serverMuted": false
+        },
+        {
+          "mediaType": "videoBasedScreenSharing",
+          "label": "applicationsharing-video",
+          "sourceId": "26",
+          "direction": "receiveOnly",
+          "serverMuted": false
+        },
+        {
+          "mediaType": "data",
+          "label": "data",
+          "sourceId": "27",
+          "direction": "sendReceive",
+          "serverMuted": false
+        }
+      ]
+    },
+    {
+      "id": "d90ca749-93eb-41e7-8e67-13462d6d4e58",
+      "metadata": null,
+      "isMuted": true,
+      "isInLobby": false,
+      "recordingInfo": null,
+      "info": {
+        "endpointType": "default",
+        "region": null,
+        "languageId": "en-US",
+        "countryCode": null,
+        "participantId": "d90ca749-93eb-41e7-8e67-13462d6d4e58",
+        "identity": {
+          "phone": null,
+          "guest": null,
+          "encrypted": null,
+          "onPremises": null,
+          "applicationInstance": null,
+          "application": null,
+          "device": null,
+          "user": {
+            "id": "e452b1cb-4cd1-4558-beca-f7aeb71f434a",
+            "displayName": "clifford olawaiye",
+            "tenantId": "0cd9af8a-802d-4b78-9302-81f9b72167e5",
+            "registrantId": null,
+            "identityProvider": "AAD"
+          }
+        }
+      },
+      "mediaStreams": [
+        {
+          "mediaType": "audio",
+          "label": "main-audio",
+          "sourceId": "2",
+          "direction": "sendReceive",
+          "serverMuted": false
+        },
+        {
+          "mediaType": "video",
+          "label": "main-video",
+          "sourceId": "3",
+          "direction": "receiveOnly",
+          "serverMuted": false
+        },
+        {
+          "mediaType": "videoBasedScreenSharing",
+          "label": "applicationsharing-video",
+          "sourceId": "13",
+          "direction": "receiveOnly",
+          "serverMuted": false
+        },
+        {
+          "mediaType": "data",
+          "label": "data",
+          "sourceId": "14",
+          "direction": "sendReceive",
+          "serverMuted": false
+        }
+      ]
+    },
+    {
+      "id": "cef75cb1-0497-4f2e-94bb-75735d802b6f",
+      "metadata": null,
+      "isMuted": false,
+      "isInLobby": false,
+      "recordingInfo": null,
+      "info": {
+        "endpointType": "default",
+        "region": null,
+        "languageId": null,
+        "countryCode": null,
+        "participantId": "cef75cb1-0497-4f2e-94bb-75735d802b6f",
+        "identity": {
+          "user": null,
+          "phone": null,
+          "guest": null,
+          "encrypted": null,
+          "onPremises": null,
+          "applicationInstance": null,
+          "device": null,
+          "application": {
+            "id": "0754b74f-143e-43a8-9b13-a0ce1f09a75f",
+            "displayName": "TestBot",
+            "tenantId": "0cd9af8a-802d-4b78-9302-81f9b72167e5",
+            "registrantId": null,
+            "identityProvider": "AAD"
+          }
+        }
+      },
+      "mediaStreams": [
+        {
+          "mediaType": "audio",
+          "label": "main-audio",
+          "sourceId": "1",
+          "direction": "sendReceive",
+          "serverMuted": false
+        }
+      ]
+    }
+  ]
+}
+
+//after drop pc 
+{
+  "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#communications/calls('401f5d00-8431-4641-93e6-16c375f9f05f')/participants",
+  "value": [
+    {
+      "id": "c5d7df24-e927-4704-9b83-833a68a85010",
+      "metadata": null,
+      "isMuted": true,
+      "isInLobby": false,
+      "recordingInfo": null,
+      "info": {
+        "endpointType": "default",
+        "region": null,
+        "languageId": "en-GB",
+        "countryCode": null,
+        "participantId": "c5d7df24-e927-4704-9b83-833a68a85010",
+        "identity": {
+          "phone": null,
+          "guest": null,
+          "encrypted": null,
+          "onPremises": null,
+          "applicationInstance": null,
+          "application": null,
+          "device": null,
+          "user": {
+            "id": "1f16b850-2642-4236-a7be-46c783b527f0",
+            "displayName": "clifford olawaiye",
+            "tenantId": "0cd9af8a-802d-4b78-9302-81f9b72167e5",
+            "registrantId": null,
+            "identityProvider": "AAD"
+          }
+        }
+      },
+      "mediaStreams": [
+        {
+          "mediaType": "audio",
+          "label": "main-audio",
+          "sourceId": "15",
+          "direction": "sendReceive",
+          "serverMuted": false
+        },
+        {
+          "mediaType": "video",
+          "label": "main-video",
+          "sourceId": "16",
+          "direction": "receiveOnly",
+          "serverMuted": false
+        },
+        {
+          "mediaType": "videoBasedScreenSharing",
+          "label": "applicationsharing-video",
+          "sourceId": "26",
+          "direction": "receiveOnly",
+          "serverMuted": false
+        },
+        {
+          "mediaType": "data",
+          "label": "data",
+          "sourceId": "27",
+          "direction": "sendReceive",
+          "serverMuted": false
+        }
+      ]
+    },
+    {
+      "id": "cef75cb1-0497-4f2e-94bb-75735d802b6f",
+      "metadata": null,
+      "isMuted": false,
+      "isInLobby": false,
+      "recordingInfo": null,
+      "info": {
+        "endpointType": "default",
+        "region": null,
+        "languageId": null,
+        "countryCode": null,
+        "participantId": "cef75cb1-0497-4f2e-94bb-75735d802b6f",
+        "identity": {
+          "user": null,
+          "phone": null,
+          "guest": null,
+          "encrypted": null,
+          "onPremises": null,
+          "applicationInstance": null,
+          "device": null,
+          "application": {
+            "id": "0754b74f-143e-43a8-9b13-a0ce1f09a75f",
+            "displayName": "TestBot",
+            "tenantId": "0cd9af8a-802d-4b78-9302-81f9b72167e5",
+            "registrantId": null,
+            "identityProvider": "AAD"
+          }
+        }
+      },
+      "mediaStreams": [
+        {
+          "mediaType": "audio",
+          "label": "main-audio",
+          "sourceId": "1",
+          "direction": "sendReceive",
+          "serverMuted": false
+        }
+      ]
+    }
+  ]
+}

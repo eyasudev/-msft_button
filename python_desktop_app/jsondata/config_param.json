@@ -1,0 +1,8 @@
+{
+  "authority": "https://login.microsoftonline.com/0cd9af8a-802d-4b78-9302-81f9b72167e5",
+  "client_id": "0754b74f-143e-43a8-9b13-a0ce1f09a75f",
+  "scope": [ "https://graph.microsoft.com/.default" ],
+  "secret": "vDp8Q~~LvBsnkiWMGuNAp~ScKbGJri1teDLjXcS0",
+  "ep_get_users": "https://graph.microsoft.com/v1.0/users",
+  "ep_create_call": "https://graph.microsoft.com/v1.0/communications/calls"
+}
