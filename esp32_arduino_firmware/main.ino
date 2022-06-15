@@ -4,7 +4,7 @@
 #include <BLE2902.h>
 
  
-#include <Button.h>
+#include <Button.h> //https://www.arduino.cc/reference/en/libraries/button/
 
    
 /** Globals: Switch */
@@ -18,7 +18,7 @@ BLEServer *pServer = NULL;
 BLECharacteristic * pTxCharacteristic;
 bool deviceConnected = false;
 bool oldDeviceConnected = false;
-uint8_t txValue = 0;
+uint32_t tm_counter = 0;
 
 // See the following for generating UUIDs:
 // https://www.uuidgenerator.net/
@@ -90,16 +90,40 @@ void setup_ble(){
 
 }
 
-char data_to_send[20] = "hello ";
-void loop_ble(){
-    if (deviceConnected) {
-        txValue++;
-        if (!(txValue % 100)){
-          //only send data every 100 of 10ms 
-          snprintf(data_to_send, sizeof(data_to_send), "Hello %d", txValue);
-          pTxCharacteristic->setValue((uint8_t*)data_to_send, strlen(data_to_send) + 1);
-          pTxCharacteristic->notify();
+void setup(){
+    /** Setup: switch */ 
+    Serial.begin(115200);
+    button1.begin();
+    Serial.println("Hello there");
+
+    /** Setup: BLE */ 
+    setup_ble();
+}
+
+void loop(){
+
+    // /** Logic: Switch */
+    // if (button1.pressed()) Serial.println("Button 1 pressed");
+    // if (button1.released()) Serial.println("Button 1 released");
+
+    /** Logic: Bluetooth */
+    if (deviceConnected) {      
+        //send data on every toggle or every 100 of 10ms (1 sec)
+        if (button1.toggled() || !(tm_counter % 100)) {
+            //Send unsolicited events first 
+            bool btn_ret =   button1.read();
+            if (btn_ret == Button::PRESSED) Serial.println("Button 1 pressed");
+            else Serial.println("Button 1 released");
+
+            tm_counter=0; //reset counter
+            
+            char data_to_send[20] = "";
+            snprintf(data_to_send, sizeof(data_to_send), "teamsbtn:%02d", btn_ret);
+            pTxCharacteristic->setValue((uint8_t*)data_to_send, strlen(data_to_send));
+            pTxCharacteristic->notify();
         }
+
+        tm_counter++;
         delay(10); // bluetooth stack will go into congestion, if too many packets are sent
     }
 
@@ -116,26 +140,6 @@ void loop_ble(){
 		// do stuff here on connecting
         oldDeviceConnected = deviceConnected;
     }
-}
-
-void setup(){
-    /** Setup: switch */ 
-    Serial.begin(115200);
-    button1.begin();
-    Serial.println("Hello there");
-
-    /** Setup: BLE */ 
-    setup_ble();
-}
-
-
-void loop(){
-    /** Logic: Switch */
-    if (button1.pressed()) Serial.println("Button 1 pressed");
-    if (button1.released()) Serial.println("Button 1 released");
-
-    /** Logic: Bluetooth */
-    loop_ble();
 }
 
 
