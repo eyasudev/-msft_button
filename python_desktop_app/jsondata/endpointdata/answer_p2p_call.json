@@ -1,0 +1,10 @@
+{
+  "callbackUri": "",
+  "mediaConfig": {
+    "@odata.type": "#microsoft.graph.serviceHostedMediaConfig"
+  },
+  "acceptedModalities": [
+    "audio"
+  ],
+  "participantCapacity": 200
+}

@@ -56,6 +56,7 @@
 ///SAMPLE STARTS HERE
 
 
+//RESPONSE TO: GET_PARTICIPANT DATA
 //when having two other participants aside the bot
 
 {
@@ -223,7 +224,7 @@
   ]
 }
 
-//after drop pc 
+//after dropping participant : my pc 
 {
   "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#communications/calls('401f5d00-8431-4641-93e6-16c375f9f05f')/participants",
   "value": [
@@ -327,4 +328,106 @@
       ]
     }
   ]
+}
+
+
+//Call Noticification sample data 
+{
+  "@odata.type": "#microsoft.graph.commsNotifications",
+  "value": [
+    {
+      "@odata.type": "#microsoft.graph.commsNotification",
+      "changeType": "created",
+      "resource": "/app/calls/461f5d00-ebe5-4a8c-bc3f-2129d67e3935",
+      "resourceUrl": "/communications/calls/461f5d00-ebe5-4a8c-bc3f-2129d67e3935",
+      "resourceData": {
+        "@odata.type": "#microsoft.graph.call",
+        "state": "incoming",
+        "direction": "incoming",
+        "callbackUri": "https://321e-102-89-32-89.eu.ngrok.io",
+        "source": {
+          "@odata.type": "#microsoft.graph.participantInfo",
+          "id": "319f675b-4baa-4c2e-9330-dbcb0c5b7e54", //participant id 
+          "identity": {
+            "@odata.type": "#microsoft.graph.identitySet",
+            "user": {
+              "@odata.type": "#microsoft.graph.identity",
+              "id": "e452b1cb-4cd1-4558-beca-f7aeb71f434a",
+              "tenantId": "0cd9af8a-802d-4b78-9302-81f9b72167e5",
+              "identityProvider": "AAD"
+            }
+          },
+          "endpointType": "default",
+          "region": "emea",
+          "languageId": "en-US"
+        },
+        "targets": [
+          {
+            "@odata.type": "#microsoft.graph.invitationParticipantInfo",
+            "identity": {
+              "@odata.type": "#microsoft.graph.identitySet",
+              "application": {
+                "@odata.type": "#microsoft.graph.identity",
+                "id": "0754b74f-143e-43a8-9b13-a0ce1f09a75f",
+                "identityProvider": "AAD"
+              }
+            },
+            "endpointType": "default",
+            "id": "d9652558-c3fd-470e-b902-ffc65ca8acc5",
+            "region": None,
+            "languageId": None
+          }
+        ],
+        "tenantId": "0cd9af8a-802d-4b78-9302-81f9b72167e5",
+        "myParticipantId": "d9652558-c3fd-470e-b902-ffc65ca8acc5",
+        "callChainId": "032302ce-0e43-42e2-9a90-8f2ae4329f44",
+        "incomingContext": {
+          "@odata.type": "#microsoft.graph.incomingContext",
+          "sourceParticipantId": "319f675b-4baa-4c2e-9330-dbcb0c5b7e54"
+        },
+        "mediaHostedRegion": "Unknown",
+        "id": "461f5d00-ebe5-4a8c-bc3f-2129d67e3935", //call id
+        "applicationMetadata": {
+          "botData": {
+            "isMultiParty": False
+          }
+        }
+      }
+    }
+  ]
+}
+
+
+
+//RESPONSE TO CALL NOTIFICATION 
+{
+  "callbackUri": "",
+  "mediaConfig": {
+    "@odata.type": "#microsoft.graph.appHostedMediaConfig",
+    "blob": "<Media Session Configuration Blob>"
+  },
+  "acceptedModalities": [
+    "audio"
+  ],
+  "participantCapacity": 200
+}
+
+
+//
+{
+  "callbackUri": "",
+  "acceptedModalities": [ "audio" ],
+  "mediaConfig": {
+    "@odata.type": "#microsoft.graph.serviceHostedMediaConfig",
+    "preFetchMedia": [
+      {
+        "uri": "https://cdn.contoso.com/beep.wav",
+        "resourceId": "1D6DE2D4-CD51-4309-8DAA-70768651088E"
+      },
+      {
+        "uri": "https://cdn.contoso.com/cool.wav",
+        "resourceId": "1D6DE2D4-CD51-4309-8DAA-70768651088F"
+      }
+    ]
+  }
 }

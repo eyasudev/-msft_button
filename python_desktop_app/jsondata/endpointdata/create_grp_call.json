@@ -2,7 +2,7 @@
   "@odata.type": "#microsoft.graph.call",
   "direction": "outgoing",
   "subject": "Create a group call with service hosted media",
-  "callbackUri": "https://webhook.site/7de9fc35-0d22-4ed1-9240-5b591054abf7",
+  "callbackUri": "",
   "source": {
     "@odata.type": "#microsoft.graph.participantInfo",
     "identity": {

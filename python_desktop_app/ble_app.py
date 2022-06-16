@@ -27,8 +27,8 @@ CHARACTERISTIC_UUID_TX = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E"
 
 
 #global variables for internal use
-count_time = 0
 NO_RESPONSE_TIMEOUT = 3 #3 secs
+count_time = NO_RESPONSE_TIMEOUT #ensures that isBleAlive returns false on startup
 #low value is good, counter only starts after establishing connection
 
 BTN_PRESSED = True
@@ -99,7 +99,5 @@ def main():
 if __name__ == "__main__":
     main()
     
-
-
 
 

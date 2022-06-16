@@ -7,12 +7,17 @@
     jclif6 id: 1f16b850-2642-4236-a7be-46c783b527f0
     cliffordolaw 16ssq: e452b1cb-4cd1-4558-beca-f7aeb71f434a
 
+    https://321e-102-89-32-89.eu.ngrok.io -> http://localhost:5002  
+
+
+
     NB: the data for user id is in endpoints folder
 """
 
 import sys
 import json 
 import logging 
+import time
 
 import requests
 import msal
@@ -29,6 +34,12 @@ endpoint_create_p2p_call = json.load(open("./jsondata/endpointdata/create_p2p_ca
 endpoint_create_grp_call = json.load(open("./jsondata/endpointdata/create_grp_call.json"))
 endpoint_mute_p2p_call = json.load(open("./jsondata/endpointdata/mute_p2p_call.json"))
 endpoint_mute_grp_call = json.load(open("./jsondata/endpointdata/mute_grp_call.json"))
+endpoint_answer_p2p_call = json.load(open("./jsondata/endpointdata/answer_p2p_call.json"))
+
+#replace their callbackuri with that from the config 
+endpoint_create_p2p_call["callbackUri"] = config["callbackUri"]
+endpoint_create_grp_call["callbackUri"] = config["callbackUri"]
+endpoint_answer_p2p_call["callbackUri"] = config["callbackUri"]
 
 app = msal.ConfidentialClientApplication(
     config["client_id"], authority=config["authority"],
@@ -57,14 +68,20 @@ Post and Get endpoints function
 def ep_post_req(endpoint, json_data):
     global result
     if "access_token" in result:
-        graph_data = requests.post(
+        graph_data_raw = requests.post(
             endpoint,
             json=json_data,
-            headers={'Authorization': 'Bearer ' + result['access_token']}, ).json()
-
-        print("Graph API call result: ")
-        print(json.dumps(graph_data, indent=2))
-        return graph_data
+            headers={'Authorization': 'Bearer ' + result['access_token']}, )
+        try: 
+            graph_data = graph_data_raw.json()
+            print("Graph API call result: ")
+            print(json.dumps(graph_data, indent=2))
+            return graph_data
+        except Exception as e :
+            print(e, file = sys.stderr) 
+            print("Graph result raw: {}".format(graph_data_raw))
+            return None
+            
 
     print(result.get("error"))
     print(result.get("error_description"))
@@ -136,6 +153,46 @@ def mute_participant(call_id, participant_id, to_mute=True):
     return ep_post_req(ep_str, endpoint_mute_grp_call) 
 
 
+def answer_call(call_id):
+    ep_str = config["ep_create_call"] + "/" + call_id + "/answer"
+    return ep_post_req(ep_str, endpoint_answer_p2p_call) 
+
+    
+
+"""
+    Process received data or notification 
+"""
+
+def process_webhook(data):
+    try:
+        if len(data["value"]) < 1:
+            print("No value array found")
+            return {"ret":-1}
+
+        value_0 = data["value"][0] #value at index 0 
+        if value_0["@odata.type"] != "#microsoft.graph.commsNotification":
+            print("Value data not notification")
+            return {"ret":-2}
+
+        resourceData = value_0["resourceData"]
+        if resourceData["state"] != "incoming":
+            print("Notification not an incoming call")
+            return {"ret":-3}
+
+        #GET call id, resourceUrl, and participant id, these are the data needed for putting 
+        callId = resourceData["id"]
+        resourceUrl = value_0["resourceUrl"]
+        participantId = resourceData["source"]["id"]
+
+        return {"ret":0,"callId":callId, "participantId":participantId}#, "resourceUrl":resourceUrl}
+        
+    except Exception as e: 
+        print(e, file = sys.stderr)
+        return {"ret":-99}
+
+    
+
+
 """
 #application functions
 """
@@ -204,7 +261,6 @@ def main():
                 , participant_data["value"][participant_index]["id"], to_mute=False)
             
 
-    
 
 if __name__ == "__main__":
     main()

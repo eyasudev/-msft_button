@@ -1,6 +1,6 @@
 {
   "@odata.type": "#microsoft.graph.call",
-  "callbackUri": "https://webhook.site/7de9fc35-0d22-4ed1-9240-5b591054abf7",
+  "callbackUri": "",
   "targets": [
     {
       "@odata.type": "#microsoft.graph.invitationParticipantInfo",
