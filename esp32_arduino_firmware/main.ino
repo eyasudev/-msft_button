@@ -1,16 +1,33 @@
+/**
+ * @file    main.ino
+ * @author  Clifford Olawaiye (cliffordolawaiye@gmail.com)
+ * @brief   esp32 firmware for the microsoft teams mute button project
+ * @version 1.0
+ * @date    2022-06-17
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ * @paragraph important-info Important information 
+ * 
+ *            Instructions: 
+ *            1. Connect your swtich between SWITCH_PIN and GND
+ * 
+ *            Other info:
+ *            1. A tool for generating UUIDs: https://www.uuidgenerator.net/, can 
+ *                be used for generating BLE SERVICE IDs and CHARACTERISITICS include 
+ *            2. See how to use the Button.h library here: https://www.arduino.cc/reference/en/libraries/button/
+ */
+
 #include <BLEDevice.h>
 #include <BLEServer.h>
 #include <BLEUtils.h>
 #include <BLE2902.h>
+#include <Button.h>         
 
- 
-#include <Button.h> //https://www.arduino.cc/reference/en/libraries/button/
-
-   
 /** Globals: Switch */
 #define LED_RGB 48
 #define SWITCH_PIN 1
-Button button1(SWITCH_PIN); // Connect your button between pin 2 and GND
+Button button1(SWITCH_PIN); 
 
 /** Globals: BLE */
 #define BLE_NAME "Teams mute button"
@@ -20,11 +37,10 @@ bool deviceConnected = false;
 bool oldDeviceConnected = false;
 uint32_t tm_counter = 0;
 
-// See the following for generating UUIDs:
-// https://www.uuidgenerator.net/
-#define SERVICE_UUID           "6E400001-B5A3-F393-E0A9-E50E24DCCA9E" // UART service UUID
+#define SERVICE_UUID           "6E400001-B5A3-F393-E0A9-E50E24DCCA9E" 
 #define CHARACTERISTIC_UUID_RX "6E400002-B5A3-F393-E0A9-E50E24DCCA9E"
 #define CHARACTERISTIC_UUID_TX "6E400003-B5A3-F393-E0A9-E50E24DCCA9E"
+
 
 class MyServerCallbacks: public BLEServerCallbacks {
 
@@ -35,7 +51,6 @@ class MyServerCallbacks: public BLEServerCallbacks {
     void onDisconnect(BLEServer* pServer) {
       deviceConnected = false;
     }
-
 };
 
 class MyCallbacks: public BLECharacteristicCallbacks {
@@ -102,23 +117,22 @@ void setup(){
 
 void loop(){
 
-    // /** Logic: Switch */
-    // if (button1.pressed()) Serial.println("Button 1 pressed");
-    // if (button1.released()) Serial.println("Button 1 released");
-
     /** Logic: Bluetooth */
     if (deviceConnected) {      
-        //send data on every toggle or every 100 of 10ms (1 sec)
+        //send data on every toggle or every 1 sec (100 counts of 10ms)
         if (button1.toggled() || !(tm_counter % 100)) {
-            //Send unsolicited events first 
+
             bool btn_ret =   button1.read();
+
             if (btn_ret == Button::PRESSED) Serial.println("Button 1 pressed");
             else Serial.println("Button 1 released");
 
             tm_counter=0; //reset counter
             
+            //sends "teamsbtn:00" when pressed and "teamsbtn:01" when released
             char data_to_send[20] = "";
-            snprintf(data_to_send, sizeof(data_to_send), "teamsbtn:%02d", btn_ret);
+            snprintf(data_to_send, sizeof(data_to_send), "teamsbtn:%02d", btn_ret); 
+
             pTxCharacteristic->setValue((uint8_t*)data_to_send, strlen(data_to_send));
             pTxCharacteristic->notify();
         }
@@ -137,7 +151,7 @@ void loop(){
     
     // connecting
     if (deviceConnected && !oldDeviceConnected) {
-		// do stuff here on connecting
+		    // do stuff here on connecting
         oldDeviceConnected = deviceConnected;
     }
 }
