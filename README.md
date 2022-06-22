@@ -203,22 +203,3 @@ For more information, check out these recommended resources
 3. [Register an application with the Microsoft identity platform](https://docs.microsoft.com/en-us/graph/auth-register-app-v2) or 
 4. [Register calls and meetings bot for Microsoft Teams](https://docs.microsoft.com/en-us/microsoftteams/platform/bots/calls-and-meetings/registering-calling-bot)
 
-
-### Build photos
-### Cover photos
-## About the code
-## Troubleshooting
-## Contributing
-
-######################################
-#Brief writeup should include: 
-#@
-#Project title + 
-#brief description (what it is and what it #does) + 
-
-#materials and tools used to build the project, 
-#step-by-step build instructions +
-#open-source code, 
-#project build photos, 
-#and a project cover photo.
-######################################
