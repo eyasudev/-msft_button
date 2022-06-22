@@ -39,10 +39,10 @@ The esp32 firmware:
 - On receiving PC connection it start to broadcast switch state
 
 ### System design
-1. Console application 
+#### Console application 
 ![Data flow graph](./ReadmeFiles/dataflowgraph.png)
 
-2. Hardware design 
+#### Hardware design 
 ![components arrangement](./ReadmeFiles/schematic.png)
 
 ## Materials and tools used 
@@ -91,8 +91,6 @@ cd "downloaded-repo"
 
 ### Step 2:  Setup your Azure Active Directory application
 
-<!-- 2. Register an application with the identity platform: follow the instruction [Register the Azure AD app](#Register-the-Azure-AD-app) -->
-
 NB: If you don't have a developer's account open one [here](https://docs.microsoft.com/en-us/windows/uwp/publish/opening-a-developer-account)
 
 1. Register the Azure AD app: Go to Microsoft identity platform for developers [App registrations](https://go.microsoft.com/fwlink/?linkid=2083908) 
@@ -131,21 +129,57 @@ NB: If you don't have a developer's account open one [here](https://docs.microso
   You need to be an Azure AD tenant admin to do this.
 
 6. On the app **Overview** page, find the **Application (client) ID** and **Directory (tenant) ID** values and record it for later. You'll need it to configure the Visual Studio configuration file for this project.
-
     
 ### Step 3:  Configure the console application (Python-desktop-app) to use your Azure AD tenant
 
 #### Configure the client application
-
 1. Open the `config_param.json` file
 2. Find the string key `organizations` or the UUID after `microsoftonline.com` in the `authority` variable and replace the existing value with your Azure AD tenant name (tenant id).
 3. Find the string key `client_id` and replace the existing value with the application ID (clientId) copied from the Azure portal.
 4. Find the string key `secret` and replace the existing value with the secret key you saved from the Azure portal.
+5. Find the string key `callbackUri` and replace with a callback uri, this can be done with ngrok.
 
 
-### Step 4: Run the sample
+
+### Step 4:  Setup your teams bot 
+1. Create a new bot on [Bot framework](https://dev.botframework.com/bots/new). Alternately, if you select the Create a bot button in the Bot Framework portal, you create your bot in Microsoft Azure, for which you must have an Azure account.
+
+2. Add the Teams channel to the bot.
+  - Select the Calling tab on the Teams channel page. 
+  - Select Enable calling
+  - update Webhook (for calling) with your HTTPS URL where you receive incoming notifications, for example https://contoso.com/teamsapp/api/calling. For this project, [ngrok](https://www.lullabot.com/articles/exposing-callback-and-webhook-urls-on-localhost) was used to receive the callback messages in our client application, when starting ngrok point it to the port 5002 
+
+
+### Step 5: Setup the hardware 
+1. Connect the hardware components as shown in the [Hardware design](#Hardware-design) section of [System design](#System-design)
+#### Load the arduino code onto the esp32 module
+  1. Download and install vs code 
+  2. Download and install arduino IDE 
+  3. Install arduino and c/c++ extension in vs code 
+  4. Open the esp32_arduino_firmware project in vscode 
+  4. Install the esp32-s3 board in vs code: 
+    - Open command pallette `cmd shift p`
+    - Enter `Arduino Board Manager`
+    - Goto `Additional links`
+    - Enter this link: `https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json`
+  5. Select desired board: 
+    - Open command pallette `shift cmd p`
+    - Enter `change board type`
+    - Select `Esp32-S3 Dev module`
+  6. Connect esp32-s3 devkit board: 
+    - command pallette
+    - Enter `select serial port`
+  7. Connect the cable to the "uart-usb" port and not "usb-otg" port, although both can be used to load the module but only "uart-usb" can be used for getting console debug messages 
+  8. Install the [Button library by Michael Adams](https://www.arduino.cc/reference/en/libraries/button/)
+    - Open command pallette `shift cmd p`
+    - Enter `Arduino library manager`
+    - Search for `Button` and install `Button by Michael Adams
+  9. Open the main.ino file and run the "Arduino: Upload" command at the top right corner of the `main.ino` window 
+    NB: ensure the hardware is powered up
+
+### Step 6: Run the console application 
 You'll need to install the dependencies using pip as follows:
-  
+
 ```Shell
 pip install -r requirements.txt
 ```
@@ -153,18 +187,28 @@ pip install -r requirements.txt
 Start the application, it will display some Json string containing the users in the tenant.
 
 ```Shell
-python confidential_client_secret_sample.py parameters.json
+python app.py
 ```
 
-## Other links and materials
+### Step 7: Testing the application
+1. Log on to your teams account 
+2. Start a call with the teams bot you created, it should be presented in your tenant 
+  - The app should automatically accept the call and the system should work as excepted
+
+
+## More information
+For more information, check out these recommended resources 
 1. [Microsoft Graph Fundamentals for Beginners](https://www.youtube.com/watch?v=dt-uuYPO1nk&list=PLWZJrkeLOrbbmGIW-7znaSpRinp8d-1Dt&index=1)  (Highly recommended)
 2. [Permissions and consent](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent) 
 3. [Register an application with the Microsoft identity platform](https://docs.microsoft.com/en-us/graph/auth-register-app-v2) or 
+4. [Register calls and meetings bot for Microsoft Teams](https://docs.microsoft.com/en-us/microsoftteams/platform/bots/calls-and-meetings/registering-calling-bot)
 
 
 ### Build photos
-
-<!-- DON'T FORGET PROJECT COVER PHOTO -->
+### Cover photos
+## About the code
+## Troubleshooting
+## Contributing
 
 ######################################
 #Brief writeup should include: 
@@ -178,124 +222,3 @@ python confidential_client_secret_sample.py parameters.json
 #project build photos, 
 #and a project cover photo.
 ######################################
-
-
-
-
-## About the code
-
-The relevant code for this sample is in the `confidential_client_secret_sample.py` file. The steps are:
-
-1. Create the MSAL confidential client application.
-
-    Important note: even if we are building a console application, it is a daemon, and therefore a confidential client application, as it does not
-    access Web APIs on behalf of a user, but on its own application behalf.
-
-    ```Python
-    app = msal.ConfidentialClientApplication(
-        config["client_id"], authority=config["authority"],
-        client_credential=config["secret"],
-        )
-    ```
-
-2. Define the scopes.
-
-   Specific to client credentials, you don't specify, in the code, the individual scopes you want to access. You have statically declared
-   them during the application registration step. Therefore the only possible scope is "resource/.default" (here "https://graph.microsoft.com/.default")
-   which means "the static permissions defined in the application". 
-
-   In the parameters.json file you have:
-
-    ```JSon
-    "scope": [ "https://graph.microsoft.com/.default" ],
-    ```
-
-3. Acquire the token
-
-    ```Python
-    # The pattern to acquire a token looks like this.
-    result = None
-
-    # Firstly, looks up a token from cache
-    # Since we are looking for token for the current app, NOT for an end user,
-    # notice we give account parameter as None.
-    result = app.acquire_token_silent(config["scope"], account=None)
-
-    if not result:
-    logging.info("No suitable token exists in cache. Let's get a new one from AAD.")
-    result = app.acquire_token_for_client(scopes=config["scope"])
-    ```
-
-4. Call the API
-
-    In that case calling "https://graph.microsoft.com/v1.0/users" with the access token as a bearer token.
-
-    ```Python
-    if "access_token" in result:
-        # Calling graph using the access token
-        graph_data = requests.get(  # Use token to call downstream service
-        config["endpoint"],
-        headers={'Authorization': 'Bearer ' + result['access_token']}, ).json()
-    print("Users from graph: " + str(graph_data))
-    else:
-        print(result.get("error"))
-        print(result.get("error_description"))
-        print(result.get("correlation_id"))  # You may need this when reporting a bug
-    ```
-
-## Troubleshooting
-
-### Did you forget to provide admin consent? This is needed for daemon apps
-
-If you get an error when calling the API `Insufficient privileges to complete the operation.`, this is because the tenant administrator has not granted permissions
-to the application. See step 6 of [Register the client app (daemon-console)](#register-the-client-app-daemon-console) above.
-
-You will typically see, on the output window, something like the following:
-
-```Json
-Failed to call the Web Api: Forbidden
-Content: {
-  "error": {
-    "code": "Authorization_RequestDenied",
-    "message": "Insufficient privileges to complete the operation.",
-    "innerError": {
-      "request-id": "<a guid>",
-      "date": "<date>"
-    }
-  }
-}
-```
-
-## Variation: daemon application using client credentials with certificates
-
-See [../2-Call-MsGraph-WithCertificate](../2-Call-MsGraph-WithCertificate)
-
-## Community Help and Support
-
-Use [Stack Overflow](http://stackoverflow.com/questions/tagged/msal) to get support from the community.
-Ask your questions on Stack Overflow first and browse existing issues to see if someone has asked your question before.
-Make sure that your questions or comments are tagged with [`msal` `python`].
-
-If you find a bug in the sample, please raise the issue on [GitHub Issues](../../issues).
-
-If you find a bug in Msal Python, please raise the issue on [MSAL Python GitHub Issues](https://github.com/AzureAD/microsoft-authentication-library-for-python/issues).
-
-To provide a recommendation, visit the following [User Voice page](https://feedback.azure.com/forums/169401-azure-active-directory).
-
-## Contributing
-
-If you'd like to contribute to this sample, see [CONTRIBUTING.MD](/CONTRIBUTING.md).
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information, see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
-## More information
-
-For more information, see MSAL.NET's conceptual documentation:
-
-- [Quickstart: Register an application with the Microsoft identity platform](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app)
-- [Quickstart: Configure a client application to access web APIs](https://docs.microsoft.com/azure/active-directory/develop/quickstart-configure-app-access-web-apis)
-- [Daemon app scenario](https://docs.microsoft.com/azure/active-directory/develop/scenario-daemon-overview)
-
-For more information about the underlying protocol:
-
-- [Microsoft identity platform and the OAuth 2.0 client credentials flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-client-creds-grant-flow)
