@@ -134,7 +134,7 @@ NB: If you don't have a developer's account open one [here](https://docs.microso
 
 #### Configure the client application
 1. Open the `config_param.json` file
-2. Find the string key `organizations` or the UUID after `microsoftonline.com` in the `authority` variable and replace the existing value with your Azure AD tenant name (tenant id).
+2. Find the string `<tenant_id>` in the `authority` key and replace it with your Azure AD tenant name (tenant id).
 3. Find the string key `client_id` and replace the existing value with the application ID (clientId) copied from the Azure portal.
 4. Find the string key `secret` and replace the existing value with the secret key you saved from the Azure portal.
 5. Find the string key `callbackUri` and replace with a callback uri, this can be done with ngrok.
