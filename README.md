@@ -174,9 +174,9 @@ NB: If you don't have a developer's account open one [here](https://docs.microso
  ![breaboard layout](./ReadmeFiles/schematic.png)
 
  Use the physical connection image below for more help
- ![Physical connection]("./ReadmeFiles/hardware connection images/hardware-camera-full-dark-no-power.jpeg")
+ ![Physical connection](./ReadmeFiles/hardware-connection-images/hardware-camera-full-dark-no-power.jpeg)
 
- See other hardware connection images for guidiance in the ![Hardware connection images directory]("./ReadmeFiles/hardware connection images")
+ See other hardware connection images for guidiance in the ![Hardware connection images directory]("./ReadmeFiles/hardware-connection-images")
 
  ##### Instructions
   1. Plug the esp32-s3 Devkit to the breadboard
@@ -191,7 +191,7 @@ NB: If you don't have a developer's account open one [here](https://docs.microso
     - Pin 1 from the esp32-s3
   8. Connect the 5v and G pins from the esp32-s3 to the red (+) and blue (-) lines on the breadboard respectively
   9. Connect the Load + and - pins from the charging module to the same red (+) and blue (-) lines on the breadboard respectively
-  10. verify that all connections have been made correctly, see close up images of each wiring in the ![Hardware connection images directory]("./ReadmeFiles/hardware connection images") for more certainty
+  10. verify that all connections have been made correctly, see close up images of each wiring in the ![Hardware connection images directory](./ReadmeFiles/hardware-connection-images) for more certainty
   11. Connect the Battery connector to the Batt terminal on the charging module
   12. Plug the charging module to a 5v usb power supply to charge the system, leave the battery for a few minutes to get properly charged
     **NB: If the application fails to find the BLE name of the esp32-s3 try powering the esp32-s3 directly, the battery may not yet be charged well enough**
@@ -252,8 +252,8 @@ NB: If you don't have a developer's account open one [here](https://docs.microso
   1. Run the pyton desktop application without any parameter
       ```Shell
       python app.py
-      ```
-
+      ``` 
+      Output
     ![Python app to receive calls](./ReadmeFiles/python-app-1.png)
 
   2. Goto the `calls` page
