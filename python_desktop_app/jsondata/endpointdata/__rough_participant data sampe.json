@@ -8,7 +8,7 @@
   "direction": "outgoing",
   "ringingTimeoutInSeconds": null,
   "subject": null,
-  "callbackUri": "https://76a2-102-89-32-89.eu.ngrok.io",
+  "callbackUri": "https://76a2-102-89-32-89.eu._____.io",
   "requestedModalities": [
     "audio"
   ],
@@ -722,7 +722,7 @@
         "@odata.type": "#microsoft.graph.call",
         "state": "incoming",
         "direction": "incoming",
-        "callbackUri": "https://321e-102-89-32-89.eu.ngrok.io",
+        "callbackUri": "https://321e-102-89-32-89.eu._____.io",
         "source": {
           "@odata.type": "#microsoft.graph.participantInfo",
           "id": "319f675b-4baa-4c2e-9330-dbcb0c5b7e54", //participant id 

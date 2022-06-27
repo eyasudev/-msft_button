@@ -7,5 +7,5 @@
   "ep_get_users": "https://graph.microsoft.com/v1.0/users",
   "ep_create_call": "https://graph.microsoft.com/v1.0/communications/calls",
 
-  "callbackUri":"https://76a2-102-89-32-89.eu.ngrok.io"
+  "callbackUri":"https://abc.com"
 }

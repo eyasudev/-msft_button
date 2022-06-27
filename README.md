@@ -84,10 +84,10 @@ From your shell or command line:
 git clone ____
 ```
 
-Go to the `"downloaded-repo"` folder
+Go to the `local repo` folder
 
 ```Shell
-cd "downloaded-repo"
+cd _____
 ```
 
 ### Step 2:  Setup your Azure Active Directory application
@@ -102,10 +102,12 @@ NB: If you don't have a developer's account open one [here](https://docs.microso
   - Select **Register** to create the application.
 
 3. From the **Certificates & secrets** page, in the **Client secrets** section, choose **New client secret**:
+  ![Creating a new client secret](./ReadmeFiles/aad-client-secret-1.png)
   - Type a key description (of instance `app secret`),
   - Select a key duration of either **In 1 year**, **In 2 years**, or **Never Expires**.
   - When you press the **Add** button, the key value will be displayed, copy, and save the value in a safe location.
   - You'll need this key later to configure the project in Visual Studio. This key value will not be displayed again, nor retrievable by any other means so record it as soon as it is visible from the Azure portal.
+  ![Copy the secret key](./ReadmeFiles/aad-client-secret-2.png)
   
 4. In the list of pages for the app, select **API permissions**
   - Click the **Add a permission** button and then,
@@ -123,32 +125,46 @@ NB: If you don't have a developer's account open one [here](https://docs.microso
 
   - Select the **Add permissions** button
 
-5. At this stage permissions are assigned correctly but the client app does not allow interaction.
-  Therefore no consent can be presented via a UI and accepted to use the service app.
-  Click the **Grant/revoke admin consent for {tenant}** button, and then select **Yes** when you are asked if you want to grant consent for the
-  requested permissions for all account in the tenant.
-  You need to be an Azure AD tenant admin to do this.
+5. At this stage permissions are assigned correctly but the client app does not allow interaction, no consent can be presented via a UI, therefor we have to give the application admin consent.
+
+  ![Goto the `API Permissions` page](./ReadmeFiles/aad-api-permission-1.png)
+  
+  Click the **Grant/revoke admin consent for {tenant}** button, and then select **Yes** when you are asked if you want to grant consent for the requested permissions for all account in the tenant. You need to be an Azure AD tenant admin to do this.
 
 6. On the app **Overview** page, find the **Application (client) ID** and **Directory (tenant) ID** values and record it for later. You'll need it to configure the Visual Studio configuration file for this project.
+  ![`Overview` page](./ReadmeFiles/aad-overview-1.png)
+  
+  
     
 ### Step 3:  Configure the console application (Python-desktop-app) to use your Azure AD tenant
 
 #### Configure the client application
-1. Open the `config_param.json` file
+1. Open the [`config_param.json`](./python_desktop_app/jsondata/config_param.json) file
 2. Find the string key `tenant_id` replace it with your Azure AD tenant name (tenant id).
 3. Find the string key `client_id` and replace the existing value with the application ID (clientId) copied from the Azure portal.
 4. Find the string key `secret` and replace the existing value with the secret key you saved from the Azure portal.
-5. Find the string key `callbackUri` and replace with a callback uri, this can be done with ngrok.
+5. Find the string key `callbackUri` and replace with a callback uri
 
 
 
 ### Step 4:  Setup your teams bot 
-1. Create a new bot on [Bot framework](https://dev.botframework.com/bots/new). Alternately, if you select the Create a bot button in the Bot Framework portal, you create your bot in Microsoft Azure, for which you must have an Azure account.
+1. Create a new bot on [Bot framework](https://dev.botframework.com/bots/new). Alternately, you can also create your bot if you select the `Create a bot` button in the [Bot Framework portal](https://dev.botframework.com/bots).
 
-2. Add the Teams channel to the bot.
-  - Select the Calling tab on the Teams channel page. 
+2. Following the first link in No. 1, fill in the following input accordingly 
+  ![Display name, Bot handle](./ReadmeFiles/bot-framework-registration-1.png)
+  ![App id: The **Application (client) ID** copied in step 2](./ReadmeFiles/bot-framework-registration-2.png)
+
+3. Add the `Microsoft Teams` channel to the bot.
+  ![New Bot settings page](./ReadmeFiles/bot-framework-channels-1.png)
+
+4. On the configuration page of the `Microsoft Teams` channel
+  - Select the Calling tab 
   - Select Enable calling
-  - update Webhook (for calling) with your HTTPS URL where you receive incoming notifications, for example https://contoso.com/teamsapp/api/calling. For this project, [ngrok](https://www.lullabot.com/articles/exposing-callback-and-webhook-urls-on-localhost) was used to receive the callback messages in our client application, when starting ngrok point it to the port 5002 
+  - update `Webhook (for calling)` with your URL where you'd like to receive incoming notifications, for example https://contoso.com/teamsapp/api/calling.
+
+  ![New Channel configuration page](./ReadmeFiles/bot-framework-channels-2.png)
+
+5. Save all edits and publish bot 
 
 
 ### Step 5: Setup the hardware 
