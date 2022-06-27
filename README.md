@@ -1,14 +1,15 @@
 ---
+
 Project Title: "Microsoft Team mute switch"
 Breif description: "An IoT enabled switch that mutes and unmute a user on a Microsoft Teams call"
 
 languages:
   - python 
   - C++
-products/modules used:
-  - azure-active-directory
-  - microsoft-graph-api
-  - Bleak-python-module
+# products/modules used:
+#   - azure-active-directory
+#   - microsoft-graph-api
+#   - Bleak-python-module
 
 ---
 
