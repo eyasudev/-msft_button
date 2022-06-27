@@ -81,13 +81,13 @@ To run this sample, you'll need:
 From your shell or command line:
 
 ```Shell
-git clone ____
+git clone git@github.com:cliffordolaw/msft_mute_button.git
 ```
 
 Go to the `local repo` folder
 
 ```Shell
-cd _____
+cd msft_mute_button
 ```
 
 ### Step 2:  Setup your Azure Active Directory application
@@ -240,27 +240,28 @@ python app.py
 
 2. Start a call with the teams bot you created, it should be present in your tenant 
 
-#### If the callbackUri was setup then simply place a call to the bot 
+#### If the callbackUri was setup then simply place a call to the bot from inside microsoft teams applcation
   1. Run the pyton desktop application without any parameter
     ![Python app to receive calls](./ReadmeFiles/python-app-1.png)
 
-  2. Start a call with the bot from Microsoft teams
-    ![goto `calls` page](./ReadmeFiles/msft-teams-app-call-1.png)
+  2. Goto the `calls` page
+    ![calls page](./ReadmeFiles/msft-teams-app-call-1.png)
 
-    ![search for bot and start call](./ReadmeFiles/msft-teams-app-call-2.png) 
+  3. Search for bot and start call
+    ![start call](./ReadmeFiles/msft-teams-app-call-2.png) 
 
 #### If the callbackUri isn't setup you can start the call from inside the client app
   1. Run the python app with the parameter `--call`
     ![Python app to make a call](./ReadmeFiles/python-app-start-call-1.png)
 
-  2. The application will return a list of all the users in your tenant, first select your user account, then select the user index of the user you want to call, in this sample I called both my microsoft developer account and my other individual account.
+  2. The application will return a list of all the users in your tenant, first select your account index, then select the index of the user you want to call, in this sample I called both my microsoft developer account and my other individual account.
     ![Select users to call](./ReadmeFiles/python-app-start-call-enter-user-id.png)
 
-  3. After answering the call you your two devices just press the button and see the system in action 
+  3. After answering the call on your two devices just press the button and see the system in action 
     - The mute button retrieves the participant id
     - And mutes bot the bot and the first user from your selection in #2 above, although there is a limitation with the microsoft at the moment, the bot can only mute this user but cannot unmute. 
     ![Select users to call](./ReadmeFiles/python-app-start-call-enter-mute-events.png)
-    
+
 
 
 ## More information
@@ -270,22 +271,9 @@ For more information, check out these recommended resources
 3. [Register an application with the Microsoft identity platform](https://docs.microsoft.com/en-us/graph/auth-register-app-v2) or 
 4. [Register calls and meetings bot for Microsoft Teams](https://docs.microsoft.com/en-us/microsoftteams/platform/bots/calls-and-meetings/registering-calling-bot)
 
-
-### Build photos
+<!-- 
 ### Cover photos
 ## About the code
 ## Troubleshooting
-## Contributing
+## Contributing -->
 
-######################################
-#Brief writeup should include: 
-#@
-#Project title + 
-#brief description (what it is and what it #does) + 
-
-#materials and tools used to build the project, 
-#step-by-step build instructions +
-#open-source code, 
-#project build photos, 
-#and a project cover photo.
-######################################
