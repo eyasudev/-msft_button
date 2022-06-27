@@ -14,6 +14,7 @@ import platform
 import sys
 import threading
 import time
+import logging 
 
 from bleak import BleakScanner, BleakClient
 #https://bleak.readthedocs.io/en/latest/usage.html
@@ -63,12 +64,12 @@ async def find_device(ble_nm):
     
     devices = await BleakScanner.discover()
 
-    print("Finding name: {}, platform: {}".format(ble_nm, platform.system()))
+    logging.info("Finding name: {}, platform: {}".format(ble_nm, platform.system()))
     for device in devices:
-        print(device.name)
+        logging.info(device.name)
 
         if (device.name == ble_nm):
-            print("Found teams mute button!!!")   
+            logging.info("Found teams mute button!!!")   
             
             async with BleakClient(device) as client:
                 try:
@@ -83,7 +84,7 @@ async def find_device(ble_nm):
                         await asyncio.sleep(1)
 
                 except Exception as e:
-                    print(e)
+                    logging.error(e)
     
 async def ble_start(ble_nm):
     while True:

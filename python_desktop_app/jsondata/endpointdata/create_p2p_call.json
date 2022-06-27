@@ -1,6 +1,7 @@
 {
   "@odata.type": "#microsoft.graph.call",
   "callbackUri": "",
+  "tenantId": "",
   "targets": [
     {
       "@odata.type": "#microsoft.graph.invitationParticipantInfo",
@@ -10,7 +11,7 @@
           "@odata.type": "#microsoft.graph.identity",
           "displayName": "clifford olawaiye",
           "id": "e452b1cb-4cd1-4558-beca-f7aeb71f434a",
-          "tenantId": "0cd9af8a-802d-4b78-9302-81f9b72167e5"
+          "tenantId": ""
         }
       }
     }
@@ -20,6 +21,5 @@
   ],
   "mediaConfig": {
     "@odata.type": "#microsoft.graph.serviceHostedMediaConfig"
-  },
-  "tenantId": "0cd9af8a-802d-4b78-9302-81f9b72167e5"
+  }
 }

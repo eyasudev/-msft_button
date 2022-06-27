@@ -2,9 +2,11 @@
 @
 """
 
+from logging import exception
 import ble_app
 import team_api_app
 import flask_server_app
+import logging
 
 from queue import Queue
 import threading
@@ -14,34 +16,75 @@ import time
 # button mutes and unmute bot itself. 
 #This funciton starts call immediately it's called
 #and keeps starting call when there is no call presented 
+
 def teams_api_start_call(): 
     team_api_app.init()
     # call_data = team_api_app.make_call()   #captures returned call id 
 
-    call_data = team_api_app.make_grp_call()   #captures returned call id 
+    #get user and call data, 
+    ret_data = team_api_app.init_call_operation()
+
+    if ret_data["ret"] != 0: 
+        logging.info("!!!An error occurred while starting application: code{}".format(ret_data["ret"]))
+        return
+
+    if ret_data["call_id"] == "" :
+        logging.info("!! ---> No call id yet, try making the call again")
+        return
 
     to_mute = False
     prev_to_mute = to_mute
-    
+
+    participant_id = None
 
     print("[Press the button to mute current call ] ---> MAKE CALL")
     while (True): 
         time.sleep(1)
-        print ("FROM TEAMS API; ble avail: {}, btn: {}".format(ble_app.isBleAlive(), ble_app.button_state))
+        # print ("FROM TEAMS API; ble avail: {}, btn: {}".format(ble_app.isBleAlive(), ble_app.button_state))
 
         if ble_app.isBleAlive():
             to_mute = not ble_app.button_state #pressed is low
-    
-        if (call_data == None or call_data["id"] == ""):
-            print("!! ---> No call id yet")
-            call_data = team_api_app.make_call()   #captures returned call id 
-            continue
 
         if prev_to_mute != to_mute: 
-            print("Mute command received, mute? {}".format(to_mute))
-            team_api_app.mute_call(call_data["id"], to_mute)
+            prev_to_mute = to_mute
 
-        prev_to_mute = to_mute
+            print("Mute command received, mute? {}".format(to_mute))
+
+            #mute bot
+            team_api_app.mute_call(ret_data["call_id"], to_mute)
+
+            #mute the bot caller      
+            #first find the participant ID if there is None yet
+            if participant_id==None: 
+                participant_data = team_api_app.get_call_participants(ret_data["call_id"])
+                if (participant_data == None):
+                    logging.error("!!!No participation data received")
+                    continue
+
+                if "value" not in participant_data:
+                    logging.error("!!!Error in participation data ")
+                    continue
+                
+                for participant in participant_data["value"]: 
+                    try: 
+                        if participant["info"]["identity"]["user"]["id"] == ret_data["user_id"]:
+                            print("!!Participant id found")
+                            participant_id = participant["info"]["participantId"]
+                            break
+                    except Exception as e:
+                        logging.error(e)
+                    
+                #if participant_id is still None after getting the data, continue loop 
+                if participant_id == None: 
+                    logging.error("!!!Participant ID not found")
+                    continue
+            
+            team_api_app.mute_participant(ret_data["call_id"], participant_id, to_mute)
+
+
+
+
+
 
 # button mutes and unmute bot itself. 
 #This function waits for incoming call and join
@@ -91,7 +134,6 @@ def teams_api(que):
             else: 
                 print("No call id present ")
 
-            
 
         prev_to_mute = to_mute
 
@@ -101,12 +143,14 @@ msft_graph_que = Queue()
 #for multi threading 
 thrd_lock = threading.Lock()
 Thread_ble = threading.Thread(target=ble_app.main, args=( ))
-Thread_teams_api = threading.Thread(target=teams_api, args=(msft_graph_que, ))
+# Thread_teams_api = threading.Thread(target=teams_api, args=(msft_graph_que, ))
+Thread_teams_api = threading.Thread(target=teams_api_start_call, args=( ))
+
 # Thread_flask_serv = threading.Thread(target=flask_server_app.main, args=())
 
 if __name__ == "__main__": 
     Thread_ble.start()
     Thread_teams_api.start()
-    flask_server_app.main(msft_graph_que)
+    flask_server_app.main(msft_graph_que) #this can't be run on a separate thread, has to run on main thread
 
 

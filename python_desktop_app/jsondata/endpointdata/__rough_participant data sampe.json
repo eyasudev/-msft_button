@@ -1,3 +1,92 @@
+//RESPONSE TO: CREATE CALL 
+{
+  "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#communications/calls/$entity",
+  "id": "681f6000-8db6-4b1d-8293-640a5e0dacc9",
+  "state": "establishing",
+  "transferState": null,
+  "terminationReason": null,
+  "direction": "outgoing",
+  "ringingTimeoutInSeconds": null,
+  "subject": null,
+  "callbackUri": "https://76a2-102-89-32-89.eu.ngrok.io",
+  "requestedModalities": [
+    "audio"
+  ],
+  "activeModalities": [],
+  "routingPolicies": [],
+  "tenantId": "0cd9af8a-802d-4b78-9302-81f9b72167e5",
+  "myParticipantId": "a00a6217-d6e0-4302-b898-338e3e03e58f",
+  "callChainId": "957b621f-d4d3-42ea-9171-da6258982119",
+  "mediaHostedRegion": null,
+  "mediaState": null,
+  "resultInfo": null,
+  "answeredBy": null,
+  "chatInfo": null,
+  "meetingInfo": null,
+  "transcription": null,
+  "callOptions": null,
+  "meetingCapability": null,
+  "breakoutDetails": null,
+  "pstnDetails": null,
+  "toneInfo": null,
+  "incomingContext": null,
+  "terminationSender": null,
+  "meetingGroupDetails": null,
+  "callRoutes": [],
+  "source": {
+    "endpointType": null,
+    "region": null,
+    "languageId": null,
+    "countryCode": null,
+    "participantId": null,
+    "identity": {
+      "user": null,
+      "phone": null,
+      "guest": null,
+      "encrypted": null,
+      "onPremises": null,
+      "applicationInstance": null,
+      "device": null,
+      "application": {
+        "id": "0754b74f-143e-43a8-9b13-a0ce1f09a75f",
+        "displayName": null,
+        "tenantId": null,
+        "registrantId": null,
+        "identityProvider": "AAD"
+      }
+    }
+  },
+  "targets": [
+    {
+      "endpointType": null,
+      "replacesCallId": null,
+      "hidden": null,
+      "removeFromDefaultAudioRoutingGroup": null,
+      "participantId": null,
+      "identity": {
+        "phone": null,
+        "guest": null,
+        "encrypted": null,
+        "onPremises": null,
+        "applicationInstance": null,
+        "application": null,
+        "device": null,
+        "user": {
+          "id": "e452b1cb-4cd1-4558-beca-f7aeb71f434a",
+          "displayName": "clifford olawaiye",
+          "tenantId": "0cd9af8a-802d-4b78-9302-81f9b72167e5",
+          "registrantId": null
+        }
+      }
+    }
+  ],
+  "mediaConfig": {
+    "@odata.type": "#microsoft.graph.serviceHostedMediaConfig",
+    "preFetchMedia": []
+  }
+}
+
+//RESPONSE TO: CREATE GROUP CALL
 {
   "@odata.type": "#microsoft.graph.call",
   "direction": "outgoing",
@@ -55,10 +144,299 @@
 
 ///SAMPLE STARTS HERE
 
+//RESPONSE TO: GET USERS,
+{
+  "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users",
+  "value": [
+    {
+      "businessPhones": [
+        "+1 425 555 0109"
+      ],
+      "displayName": "Adele Vance",
+      "givenName": "Adele",
+      "jobTitle": "Retail Manager",
+      "mail": "AdeleV@16ssq.onmicrosoft.com",
+      "mobilePhone": null,
+      "officeLocation": "18/2111",
+      "preferredLanguage": "en-US",
+      "surname": "Vance",
+      "userPrincipalName": "AdeleV@16ssq.onmicrosoft.com",
+      "id": "2362af16-71f0-4770-856c-f007cb6fae04"
+    },
+    {
+      "businessPhones": [
+        "+1 858 555 0110"
+      ],
+      "displayName": "Alex Wilber",
+      "givenName": "Alex",
+      "jobTitle": "Marketing Assistant",
+      "mail": "AlexW@16ssq.onmicrosoft.com",
+      "mobilePhone": null,
+      "officeLocation": "131/1104",
+      "preferredLanguage": "en-US",
+      "surname": "Wilber",
+      "userPrincipalName": "AlexW@16ssq.onmicrosoft.com",
+      "id": "e9502aad-8f25-43cf-9e77-b5ccd0dfb9df"
+    },
+    {
+      "businessPhones": [
+        "2347066039722"
+      ],
+      "displayName": "clifford olawaiye",
+      "givenName": "clifford",
+      "jobTitle": null,
+      "mail": "clifford@16ssq.onmicrosoft.com",
+      "mobilePhone": null,
+      "officeLocation": null,
+      "preferredLanguage": null,
+      "surname": "olawaiye",
+      "userPrincipalName": "clifford@16ssq.onmicrosoft.com",
+      "id": "e452b1cb-4cd1-4558-beca-f7aeb71f434a"
+    },
+    {
+      "businessPhones": [],
+      "displayName": "cliffordolawaiye",
+      "givenName": null,
+      "jobTitle": null,
+      "mail": "cliffordolawaiye@gmail.com",
+      "mobilePhone": null,
+      "officeLocation": null,
+      "preferredLanguage": null,
+      "surname": null,
+      "userPrincipalName": "cliffordolawaiye_gmail.com#EXT#@16ssq.onmicrosoft.com",
+      "id": "935b59a2-ebc4-4939-8abc-a64f2491049d"
+    },
+    {
+      "businessPhones": [
+        "+1 205 555 0108"
+      ],
+      "displayName": "Diego Siciliani",
+      "givenName": "Diego",
+      "jobTitle": "HR Manager",
+      "mail": "DiegoS@16ssq.onmicrosoft.com",
+      "mobilePhone": null,
+      "officeLocation": "14/1108",
+      "preferredLanguage": "en-US",
+      "surname": "Siciliani",
+      "userPrincipalName": "DiegoS@16ssq.onmicrosoft.com",
+      "id": "53fa302e-9cfa-4d5b-9864-7dced662fdf9"
+    },
+    {
+      "businessPhones": [
+        "+1 309 555 0104"
+      ],
+      "displayName": "Grady Archie",
+      "givenName": "Grady",
+      "jobTitle": "Designer",
+      "mail": "GradyA@16ssq.onmicrosoft.com",
+      "mobilePhone": null,
+      "officeLocation": "19/2109",
+      "preferredLanguage": "en-US",
+      "surname": "Archie",
+      "userPrincipalName": "GradyA@16ssq.onmicrosoft.com",
+      "id": "d75d6fcf-4350-4738-988a-25cde9d542a8"
+    },
+    {
+      "businessPhones": [
+        "+1 954 555 0118"
+      ],
+      "displayName": "Henrietta Mueller",
+      "givenName": "Henrietta",
+      "jobTitle": "Developer",
+      "mail": "HenriettaM@16ssq.onmicrosoft.com",
+      "mobilePhone": null,
+      "officeLocation": "18/1106",
+      "preferredLanguage": "en-US",
+      "surname": "Mueller",
+      "userPrincipalName": "HenriettaM@16ssq.onmicrosoft.com",
+      "id": "b3853e5f-5580-4edc-90b2-8d09cc25745e"
+    },
+    {
+      "businessPhones": [
+        "+1 918 555 0101"
+      ],
+      "displayName": "Isaiah Langer",
+      "givenName": "Isaiah",
+      "jobTitle": "Sales Rep",
+      "mail": "IsaiahL@16ssq.onmicrosoft.com",
+      "mobilePhone": null,
+      "officeLocation": "20/1101",
+      "preferredLanguage": "en-US",
+      "surname": "Langer",
+      "userPrincipalName": "IsaiahL@16ssq.onmicrosoft.com",
+      "id": "b82f0aee-762d-4678-8e50-4d7ab3a5f625"
+    },
+    {
+      "businessPhones": [],
+      "displayName": "clifford olawaiye",
+      "givenName": null,
+      "jobTitle": null,
+      "mail": "jclif6@gmail.com",
+      "mobilePhone": null,
+      "officeLocation": null,
+      "preferredLanguage": null,
+      "surname": null,
+      "userPrincipalName": "jclif6_gmail.com#EXT#@16ssq.onmicrosoft.com",
+      "id": "1f16b850-2642-4236-a7be-46c783b527f0"
+    },
+    {
+      "businessPhones": [
+        "+1 502 555 0102"
+      ],
+      "displayName": "Johanna Lorenz",
+      "givenName": "Johanna",
+      "jobTitle": "Senior Engineer",
+      "mail": "JohannaL@16ssq.onmicrosoft.com",
+      "mobilePhone": null,
+      "officeLocation": "23/2102",
+      "preferredLanguage": "en-US",
+      "surname": "Lorenz",
+      "userPrincipalName": "JohannaL@16ssq.onmicrosoft.com",
+      "id": "ca45c2bb-347a-4a95-8a2f-de6c5465d23e"
+    },
+    {
+      "businessPhones": [
+        "+1 980 555 0101"
+      ],
+      "displayName": "Joni Sherman",
+      "givenName": "Joni",
+      "jobTitle": "Paralegal",
+      "mail": "JoniS@16ssq.onmicrosoft.com",
+      "mobilePhone": null,
+      "officeLocation": "20/1109",
+      "preferredLanguage": "en-US",
+      "surname": "Sherman",
+      "userPrincipalName": "JoniS@16ssq.onmicrosoft.com",
+      "id": "e85bde73-9ed3-4a41-a224-be501560c8c6"
+    },
+    {
+      "businessPhones": [
+        "+1 913 555 0101"
+      ],
+      "displayName": "Lee Gu",
+      "givenName": "Lee",
+      "jobTitle": "Director",
+      "mail": "LeeG@16ssq.onmicrosoft.com",
+      "mobilePhone": null,
+      "officeLocation": "23/3101",
+      "preferredLanguage": "en-US",
+      "surname": "Gu",
+      "userPrincipalName": "LeeG@16ssq.onmicrosoft.com",
+      "id": "de5c6442-be36-486a-8dc3-f8ff13ccd308"
+    },
+    {
+      "businessPhones": [
+        "+1 918 555 0107"
+      ],
+      "displayName": "Lidia Holloway",
+      "givenName": "Lidia",
+      "jobTitle": "Product Manager",
+      "mail": "LidiaH@16ssq.onmicrosoft.com",
+      "mobilePhone": null,
+      "officeLocation": "20/2107",
+      "preferredLanguage": "en-US",
+      "surname": "Holloway",
+      "userPrincipalName": "LidiaH@16ssq.onmicrosoft.com",
+      "id": "4b412f25-bc29-4fc1-afd7-9acc3ad8d978"
+    },
+    {
+      "businessPhones": [
+        "+1 918 555 0104"
+      ],
+      "displayName": "Lynne Robbins",
+      "givenName": "Lynne",
+      "jobTitle": "Planner",
+      "mail": "LynneR@16ssq.onmicrosoft.com",
+      "mobilePhone": null,
+      "officeLocation": "20/1104",
+      "preferredLanguage": "en-US",
+      "surname": "Robbins",
+      "userPrincipalName": "LynneR@16ssq.onmicrosoft.com",
+      "id": "a02e01b5-dcf0-4025-8928-1a6955f34c92"
+    },
+    {
+      "businessPhones": [
+        "+1 412 555 0109"
+      ],
+      "displayName": "Megan Bowen",
+      "givenName": "Megan",
+      "jobTitle": "Marketing Manager",
+      "mail": "MeganB@16ssq.onmicrosoft.com",
+      "mobilePhone": null,
+      "officeLocation": "12/1110",
+      "preferredLanguage": "en-US",
+      "surname": "Bowen",
+      "userPrincipalName": "MeganB@16ssq.onmicrosoft.com",
+      "id": "c99ca541-f80a-4a0e-852b-6f9a9faec1b9"
+    },
+    {
+      "businessPhones": [
+        "+1 858 555 0109"
+      ],
+      "displayName": "Miriam Graham",
+      "givenName": "Miriam",
+      "jobTitle": "Director",
+      "mail": "MiriamG@16ssq.onmicrosoft.com",
+      "mobilePhone": null,
+      "officeLocation": "131/2103",
+      "preferredLanguage": "en-US",
+      "surname": "Graham",
+      "userPrincipalName": "MiriamG@16ssq.onmicrosoft.com",
+      "id": "548f36f9-1bba-4213-be1e-1cd063636230"
+    },
+    {
+      "businessPhones": [
+        "+1 206 555 0105"
+      ],
+      "displayName": "Nestor Wilke",
+      "givenName": "Nestor",
+      "jobTitle": "Director",
+      "mail": "NestorW@16ssq.onmicrosoft.com",
+      "mobilePhone": null,
+      "officeLocation": "36/2121",
+      "preferredLanguage": "en-US",
+      "surname": "Wilke",
+      "userPrincipalName": "NestorW@16ssq.onmicrosoft.com",
+      "id": "5e6966f5-1306-49b7-bab4-f9641d7d65ff"
+    },
+    {
+      "businessPhones": [
+        "+1 502 555 0144"
+      ],
+      "displayName": "Patti Fernandez",
+      "givenName": "Patti",
+      "jobTitle": "President",
+      "mail": "PattiF@16ssq.onmicrosoft.com",
+      "mobilePhone": null,
+      "officeLocation": "15/1102",
+      "preferredLanguage": "en-US",
+      "surname": "Fernandez",
+      "userPrincipalName": "PattiF@16ssq.onmicrosoft.com",
+      "id": "2f99eb0e-a77c-44a0-8835-3d0927ca1e95"
+    },
+    {
+      "businessPhones": [
+        "+20 255501070"
+      ],
+      "displayName": "Pradeep Gupta",
+      "givenName": "Pradeep",
+      "jobTitle": "Accountant",
+      "mail": "PradeepG@16ssq.onmicrosoft.com",
+      "mobilePhone": null,
+      "officeLocation": "98/2202",
+      "preferredLanguage": "en-US",
+      "surname": "Gupta",
+      "userPrincipalName": "PradeepG@16ssq.onmicrosoft.com",
+      "id": "4fb2c481-cabf-469e-8879-cac6d4c729cd"
+    }
+  ]
+}
+
 
 //RESPONSE TO: GET_PARTICIPANT DATA
 //when having two other participants aside the bot
-
+// [value][0][info][identity][user][id]
+// [value][0][info][participantId]
 {
   "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#communications/calls('401f5d00-8431-4641-93e6-16c375f9f05f')/participants",
   "value": [

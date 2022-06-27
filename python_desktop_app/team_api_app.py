@@ -23,6 +23,7 @@ import msal
 
 # Optional logging
 # logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 #configuration from file system
 config_path = "./jsondata/config_param.json"
@@ -40,8 +41,17 @@ endpoint_create_p2p_call["callbackUri"] = config["callbackUri"]
 endpoint_create_grp_call["callbackUri"] = config["callbackUri"]
 endpoint_answer_p2p_call["callbackUri"] = config["callbackUri"]
 
+#replace their tenantId with that from the config 
+endpoint_create_p2p_call["tenantId"] = config["tenant_id"]
+endpoint_create_p2p_call["targets"][0]["identity"]["user"]["tenantId"] = config["tenant_id"]
+    #ignore using group call for now, user can make a call to another account from inside the teams app
+
+endpoint_create_grp_call["tenantId"] = config["tenant_id"]
+endpoint_create_grp_call["targets"][0]["identity"]["user"]["tenantId"] = config["tenant_id"]
+endpoint_create_grp_call["targets"][1]["identity"]["user"]["tenantId"] = config["tenant_id"]
+
 app = msal.ConfidentialClientApplication(
-    config["client_id"], authority=config["authority"],
+    config["client_id"], authority=config["authority"]+config["tenant_id"],
     client_credential=config["secret"])
 
 # The pattern to acquire a token looks like this.
@@ -73,15 +83,14 @@ def ep_post_req(endpoint, json_data):
             headers={'Authorization': 'Bearer ' + result['access_token']}, )
         try: 
             graph_data = graph_data_raw.json()
-            print("Graph API call result: ")
-            print(json.dumps(graph_data, indent=2))
+            logging.info("Graph API call result: ")
+            logging.info(json.dumps(graph_data, indent=2))
             return graph_data
         except Exception as e :
             print(e, file = sys.stderr) 
             print("Graph result raw: {}".format(graph_data_raw))
             return None
             
-
     print(result.get("error"))
     print(result.get("error_description"))
     print(result.get("correlation_id"))  # You may need this when reporting a bug
@@ -95,8 +104,8 @@ def ep_get_req(endpoint):
             endpoint,
             headers={'Authorization': 'Bearer ' + result['access_token']}, ).json()
 
-        print("Graph API call result: ")
-        print(json.dumps(graph_data, indent=2))
+        logging.info("Graph API call result: ")
+        logging.info(json.dumps(graph_data, indent=2))
         return graph_data
 
     print(result.get("error"))
@@ -110,11 +119,23 @@ def ep_get_req(endpoint):
 Queries to the microsoft graph api
 """
 #send a "create call" request to server 
-def make_call(): 
-    return ep_post_req(config["ep_create_call"], endpoint_create_p2p_call) 
+def make_call(create_call_data=None, user_id=None, user_name=None): 
+    if user_id != None:
+        endpoint_create_p2p_call["targets"][0]["identity"]["user"]["id"] = user_id
+    if user_name != None:
+        endpoint_create_p2p_call["targets"][0]["identity"]["user"]["displayName"] = user_name
+
+    create_call_data = endpoint_create_p2p_call if create_call_data == None else create_call_data
+
+    return ep_post_req(config["ep_create_call"], create_call_data) 
 
 #send a "create call" request to server while using the group call data 
-def make_grp_call(): 
+def make_grp_call(user1_id=None, user2_id=None): 
+    if user1_id != None:
+        endpoint_create_grp_call["targets"][0]["identity"]["user"]["id"] = user1_id
+    if user2_id != None:
+        endpoint_create_grp_call["targets"][1]["identity"]["user"]["id"] = user2_id
+
     return ep_post_req(config["ep_create_call"], endpoint_create_grp_call) 
 
 #mute a bot on a peer 2 peer or group call 
@@ -189,6 +210,42 @@ def process_webhook(data):
         print(e, file = sys.stderr)
         return {"ret":-99}
 
+
+"""
+    Get user id, start call and save call id  
+"""
+def init_call_operation():
+    #1. Get users list first... user_data["value"][0]["displayName"],["mail"]
+    user_data = get_users() 
+    
+    if user_data == None: 
+        print("!!! No user data received ")
+        return {"ret":-1}
+
+    #2. List user data for client
+    print("Index \tName \tMail")
+    cnt = 0
+    for usr in user_data["value"]: 
+        print("{} \t{} \t{}".format(cnt, usr["displayName"], usr["mail"]))
+        cnt=cnt+1
+
+    #3. select the index of the user you want to call 
+    user1_index = int(input("\n Select first user to call (index): "))
+    user2_index = int(input("\n Select second user to call (index): "))
+
+    if user1_index >= len(user_data["value"]) or user2_index >= len(user_data["value"]): 
+        print("!!! Out of bounds: User data")
+        return {"ret":-2}
+
+    call_data = make_grp_call(user1_id=user_data["value"][user1_index]["id"], user2_id= user_data["value"][user2_index]["id"])
+
+    if (call_data == None or call_data["id"] == ""):
+        print("!! ---> No call id yet")
+        return {"ret":-3}
+
+    #NB: Can't get participant data while call isn't established yet 
+    # participant_data = get_call_participants(call_data["id"])
+    return {"ret":0, "call_id":call_data["id"], "user_id":user_data["value"][user1_index]["id"]} #only return the index of user 1, because that's the only one we want to mute 
     
 
 
@@ -202,13 +259,14 @@ def command_prompt():
     print("[3] ---> GET CALL PARTICIPANTS")
     print("[4] ---> GET users")
     print("[5] ---> MUTE/UNMUTE PARTICIPANT")
+    print("[6] ---> START CALL SPECIFIC USER")
 
     return int(input("\n Enter command index: "))
 
 def main():
     init()
     call_data = None    #captures returned call id 
-    participant_data = None    #captures returned call id 
+    participant_data = None    #captures returned participants id 
 
     while (True): 
         index = command_prompt()
@@ -258,7 +316,12 @@ def main():
             else: 
                 mute_participant(call_data["id"]
                 , participant_data["value"][participant_index]["id"], to_mute=False)
-            
+        
+        # elif (index == 6): 
+            # init_call_operation()
+        else :
+            print("!!! COMMAND NOT FOUND") 
+             
 
 
 if __name__ == "__main__":
