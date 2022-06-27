@@ -222,26 +222,38 @@ NB: If you don't have a developer's account open one [here](https://docs.microso
   9. Open the main.ino file and run the "Arduino: Upload" command at the top right corner of the `main.ino` window 
     NB: ensure the hardware is powered up
 
-### Step 6: Run the console application 
-You'll need to install the dependencies using pip as follows:
 
-```Shell
-pip install -r requirements.txt
-```
-
-Start the application, it will display some Json string containing the users in the tenant.
-
-```Shell
-python app.py
-```
-
-### Step 7: Testing the application
+### Step 6: Testing the application
 1. Log on to your teams account  
 
 2. Start a call with the teams bot you created, it should be present in your tenant 
+  - First, you'll need to a virtual environment as follows:
+    ```Shell
+    virtualenv venv
+    ```
+  - Activate the virtual environment
+    For Max:
+    ```Shell
+    source ./venv/bin/activate
+    ```
+    For Windows
+    ```Shell
+    ./venv/Scripts/activate
+    ```
 
+  - Install the dependencies using pip
+    ```Shell
+    pip install -r requirements.txt
+    ```
+
+    NOTE: A common error while running the application would be "BleakError("Bluetooth device is turned off")" all you have to do here is simply give the application permission to use the PC's Bluetooth, on mac this would be a pop up box. Also do not forget to fill up the "config_param.json" file appropriately
+  
 #### If the callbackUri was setup then simply place a call to the bot from inside microsoft teams applcation
   1. Run the pyton desktop application without any parameter
+      ```Shell
+      python app.py
+      ```
+
     ![Python app to receive calls](./ReadmeFiles/python-app-1.png)
 
   2. Goto the `calls` page
