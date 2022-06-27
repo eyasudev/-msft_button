@@ -83,8 +83,8 @@ def ep_post_req(endpoint, json_data):
             headers={'Authorization': 'Bearer ' + result['access_token']}, )
         try: 
             graph_data = graph_data_raw.json()
-            logging.info("Graph API call result: ")
-            logging.info(json.dumps(graph_data, indent=2))
+            # logging.info("Graph API call result: ")
+            # logging.info(json.dumps(graph_data, indent=2))
             return graph_data
         except Exception as e :
             print(e, file = sys.stderr) 
@@ -104,8 +104,8 @@ def ep_get_req(endpoint):
             endpoint,
             headers={'Authorization': 'Bearer ' + result['access_token']}, ).json()
 
-        logging.info("Graph API call result: ")
-        logging.info(json.dumps(graph_data, indent=2))
+        # logging.info("Graph API call result: ")
+        # logging.info(json.dumps(graph_data, indent=2))
         return graph_data
 
     print(result.get("error"))
@@ -145,7 +145,7 @@ def mute_call(call_id, to_mute=True):
         mute_str="/unmute"
 
     ep_str = config["ep_create_call"] + "/" + call_id + mute_str
-    print("Muting call with endpoint: {}".format(ep_str))
+    logging.debug("Muting call with endpoint: {}".format(ep_str))
 
     #mute and unmute use the same post payload "clientContext"
     return ep_post_req(ep_str, endpoint_mute_p2p_call) 
@@ -167,7 +167,7 @@ def mute_participant(call_id, participant_id, to_mute=True):
         mute_str = "/unmute"
     
     ep_str = config["ep_create_call"] + "/" + call_id + "/participants/" + participant_id + mute_str 
-    print("Muting participant with endpoint: {}".format(ep_str))
+    logging.debug("Muting participant with endpoint: {}".format(ep_str))
 
     #mute and unmute use the same post payload "clientContext"
     return ep_post_req(ep_str, endpoint_mute_grp_call) 

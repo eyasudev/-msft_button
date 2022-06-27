@@ -64,12 +64,12 @@ async def find_device(ble_nm):
     
     devices = await BleakScanner.discover()
 
-    logging.info("Finding name: {}, platform: {}".format(ble_nm, platform.system()))
+    logging.info("BLE -> Finding: '{}', platform: '{}'".format(ble_nm, platform.system()))
     for device in devices:
-        logging.info(device.name)
+        logging.info("BLE-> Seen '{}'".format(device.name))
 
         if (device.name == ble_nm):
-            logging.info("Found teams mute button!!!")   
+            logging.info("BLE-> Found '{}'!!!".format(ble_nm))   
             
             async with BleakClient(device) as client:
                 try:

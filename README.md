@@ -101,7 +101,7 @@ NB: If you don't have a developer's account open one [here](https://docs.microso
   - In the **Supported account types** section, select **Accounts in any organizational directory (Any Azure AD directory - Multitenant) and personal Microsoft accounts (e.g. Skype, Xbox)**.
   - Select **Register** to create the application.
 
-3. From the **Certificates & secrets** page, in the **Client secrets** section, choose **New client secret**:
+3. From the **Certificates & secrets** page, in the **Client secrets** section, select **New client secret**:
   ![Creating a new client secret](./ReadmeFiles/aad-client-secret-1.png)
   - Type a key description (of instance `app secret`),
   - Select a key duration of either **In 1 year**, **In 2 years**, or **Never Expires**.
@@ -125,11 +125,10 @@ NB: If you don't have a developer's account open one [here](https://docs.microso
 
   - Select the **Add permissions** button
 
-5. At this stage permissions are assigned correctly but the client app does not allow interaction, no consent can be presented via a UI, therefor we have to give the application admin consent.
+5. At this stage permissions are assigned correctly but the client app does not allow interaction, no consent can be presented via a UI, therefore we have to give the application admin consent. Click the **Grant/revoke admin consent for {tenant}** button, and then select **Yes** when you are asked if you want to grant consent for the requested permissions for all account in the tenant. You need to be an Azure AD tenant admin to do this.
 
-  ![Goto the `API Permissions` page](./ReadmeFiles/aad-api-permission-1.png)
+    ![Goto the `API Permissions` page](./ReadmeFiles/aad-api-permission-1.png)
   
-  Click the **Grant/revoke admin consent for {tenant}** button, and then select **Yes** when you are asked if you want to grant consent for the requested permissions for all account in the tenant. You need to be an Azure AD tenant admin to do this.
 
 6. On the app **Overview** page, find the **Application (client) ID** and **Directory (tenant) ID** values and record it for later. You'll need it to configure the Visual Studio configuration file for this project.
   ![`Overview` page](./ReadmeFiles/aad-overview-1.png)
@@ -160,7 +159,7 @@ NB: If you don't have a developer's account open one [here](https://docs.microso
 4. On the configuration page of the `Microsoft Teams` channel
   - Select the Calling tab 
   - Select Enable calling
-  - update `Webhook (for calling)` with your URL where you'd like to receive incoming notifications, for example https://contoso.com/teamsapp/api/calling.
+  - update `Webhook (for calling)` with the URI where you'd like to receive incoming call notifications and other events, for example https://contoso.com/teamsapp/api/calling.
 
   ![New Channel configuration page](./ReadmeFiles/bot-framework-channels-2.png)
 
@@ -168,7 +167,36 @@ NB: If you don't have a developer's account open one [here](https://docs.microso
 
 
 ### Step 5: Setup the hardware 
-1. Connect the hardware components as shown in the [Hardware design](#Hardware-design) section of [System design](#System-design)
+#### Connect the hardware components
+ <!-- Connect the hardware components as shown in the [Hardware design](#Hardware-design) section of [System design](#System-design) -->
+ Connect the hardware components as shown in the image below. The breadboard design doesn't include the specific esp32 devkit module used in this project because of it's shape wasn't available in the design software used, so I used the closest esp module shape that was available and this is the big white object with a blue screen on the breadboard. While making your connections simply connect your esp32 S3 devkit with the remaining components while following the pins used in the breadboard design.  
+
+ ![breaboard layout](./ReadmeFiles/schematic.png)
+
+ Use the physical connection image below for more help
+ ![Physical connection]("./ReadmeFiles/hardware connection images/hardware-camera-full-dark-no-power.jpeg")
+
+ See other hardware connection images for guidiance in the ![Hardware connection images directory]("./ReadmeFiles/hardware connection images")
+
+ ##### Instructions
+  1. Plug the esp32-s3 Devkit to the breadboard
+  2. Plug the resistor to the board (1k resistor)
+  3. Connect four wires to the switch terminals. You can use a **Crimp terminal connector**, but in this project I soldered the wires to the termianls.
+  4. Connect the +ve/Anode wire (solid orange wire) from the switch led to one terminal of the resistor
+  5. Connect the other terminal of the resitor to the 3v3 pin on the esp32-S3
+  6. Connect one Termianl (stripe green wire) of the button the the GND rail of the breadboard
+  7. insert the following pins on a single row on the bread board
+    - -ve/Cathode wire (Stripe orange wire) from the switch led
+    - The second terminal of the switch button (solid green wire)
+    - Pin 1 from the esp32-s3
+  8. Connect the 5v and G pins from the esp32-s3 to the red (+) and blue (-) lines on the breadboard respectively
+  9. Connect the Load + and - pins from the charging module to the same red (+) and blue (-) lines on the breadboard respectively
+  10. verify that all connections have been made correctly, see close up images of each wiring in the ![Hardware connection images directory]("./ReadmeFiles/hardware connection images") for more certainty
+  11. Connect the Battery connector to the Batt terminal on the charging module
+  12. Plug the charging module to a 5v usb power supply to charge the system, leave the battery for a few minutes to get properly charged
+    **NB: If the application fails to find the BLE name of the esp32-s3 try powering the esp32-s3 directly, the battery may not yet be charged well enough**
+
+
 #### Load the arduino code onto the esp32 module
   1. Download and install vs code 
   2. Download and install arduino IDE 
@@ -208,9 +236,31 @@ python app.py
 ```
 
 ### Step 7: Testing the application
-1. Log on to your teams account 
-2. Start a call with the teams bot you created, it should be presented in your tenant 
-  - The app should automatically accept the call and the system should work as excepted
+1. Log on to your teams account  
+
+2. Start a call with the teams bot you created, it should be present in your tenant 
+
+#### If the callbackUri was setup then simply place a call to the bot 
+  1. Run the pyton desktop application without any parameter
+    ![Python app to receive calls](./ReadmeFiles/python-app-1.png)
+
+  2. Start a call with the bot from Microsoft teams
+    ![goto `calls` page](./ReadmeFiles/msft-teams-app-call-1.png)
+
+    ![search for bot and start call](./ReadmeFiles/msft-teams-app-call-2.png) 
+
+#### If the callbackUri isn't setup you can start the call from inside the client app
+  1. Run the python app with the parameter `--call`
+    ![Python app to make a call](./ReadmeFiles/python-app-start-call-1.png)
+
+  2. The application will return a list of all the users in your tenant, first select your user account, then select the user index of the user you want to call, in this sample I called both my microsoft developer account and my other individual account.
+    ![Select users to call](./ReadmeFiles/python-app-start-call-enter-user-id.png)
+
+  3. After answering the call you your two devices just press the button and see the system in action 
+    - The mute button retrieves the participant id
+    - And mutes bot the bot and the first user from your selection in #2 above, although there is a limitation with the microsoft at the moment, the bot can only mute this user but cannot unmute. 
+    ![Select users to call](./ReadmeFiles/python-app-start-call-enter-mute-events.png)
+    
 
 
 ## More information
